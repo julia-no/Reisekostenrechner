@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:weightSum="1">
+
+    <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/listview_trips"
+            android:layout_weight="1.36"
+            android:layout_gravity="top"/>
+
+    <ImageButton
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:id="@+id/imageButton"
+            android:background="@drawable/oval"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="25dp"
+            android:src="@drawable/ic_plus"
+            android:layout_gravity="right"
+            android:onClick="openAddTripActivity"
+            android:clickable="false"/>
+
+</LinearLayout>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Name der Reise"
+            android:id="@+id/textViewTripName"/>
+    <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/editTextTripName"
+            android:layout_gravity="right"
+            android:text="z.B. Spanien 2005"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Name des Nutzers"
+            android:id="@+id/textViewUserName"/>
+    <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:text="z.B. Anna"
+            android:ems="10"
+            android:id="@+id/editTextUserName"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Weitere Teilnehmer"
+            android:id="@+id/textViewNameOtherUser"/>
+    <ListView
+            android:layout_width="match_parent"
+            android:layout_height="183dp"
+            android:id="@+id/listView2"/>
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
+        <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:inputType="textPersonName"
+                android:text="Weitere Teilnehmer"
+                android:ems="10"
+                android:id="@+id/editTextNewParticipant"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"/>
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+"
+                android:id="@+id/buttonAddParticipant"
+                android:layout_gravity="right"/>
+    </LinearLayout>
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hinzufügen"
+            android:id="@+id/buttonAdd"
+            android:layout_gravity="center_horizontal"
+            android:onClick="addTrip"/>
+</LinearLayout>
