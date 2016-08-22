@@ -5,7 +5,7 @@ package de.julianolden.reisekostenrechner.reisekostenrechner.objects;
  *
  * Created by Julia Nolden on 18.06.2016.
  */
-public class User {
+public class User extends Object{
     //name muss global eindeutig sein
     private String name;
 
@@ -15,5 +15,10 @@ public class User {
 
     public String getName() {
         return name;
+    }
+
+    @Override
+    public String toString() {
+        return getName();
     }
 }
