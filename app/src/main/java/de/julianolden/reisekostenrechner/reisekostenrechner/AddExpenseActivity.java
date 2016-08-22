@@ -4,8 +4,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
-import android.view.View;
+import android.view.*;
 import android.widget.*;
 import de.julianolden.reisekostenrechner.reisekostenrechner.objects.Category;
 import de.julianolden.reisekostenrechner.reisekostenrechner.objects.Expense;
@@ -13,34 +12,34 @@ import de.julianolden.reisekostenrechner.reisekostenrechner.objects.Trip;
 import de.julianolden.reisekostenrechner.reisekostenrechner.objects.User;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
+import java.util.*;
 
 /**
  * Created by Julia Nolden on 29.05.2016.
  */
 public class AddExpenseActivity extends AppCompatActivity {
 
-    private Button buttonDatepicker;
-    private Spinner spinnerCategory, spinnerPayer, spinnerRecipients;
+    private Button buttonDatepicker, buttonRecipients;
+    private Spinner spinnerCategory, spinnerPayer;
+    private ListView listRecipients;
     private TextView txtTitle;
     private EditText editTextTile, editTextAmount;
-    Trip choosenTrip;
-    Calendar choosenExpenseDate;
+
+    private Trip choosenTrip;
+    private Calendar choosenExpenseDate;
+    private List<User> choosenRecipients = new ArrayList<>();
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_expense);
-        editTextTile= (EditText) findViewById(R.id.editTextTitle);
+        editTextTile = (EditText) findViewById(R.id.editTextTitle);
         editTextAmount = (EditText) findViewById(R.id.editTextAmount);
         buttonDatepicker = (Button) findViewById(R.id.buttonDatepicker);
+        buttonRecipients = (Button) findViewById(R.id.buttonRecipientsChoice);
         spinnerCategory = (Spinner) findViewById(R.id.spinnerCategory);
         spinnerPayer = (Spinner) findViewById(R.id.spinnerPayer);
-        spinnerRecipients = (Spinner) findViewById(R.id.spinnerRecipients);
         txtTitle = (TextView) findViewById(R.id.txtTitle);
         // Ausgewaehltes Trip Objekt per uebergebenen Titel ermitteln
         Bundle bundle = getIntent().getExtras();
@@ -49,7 +48,7 @@ public class AddExpenseActivity extends AppCompatActivity {
             tripName = bundle.getString("tripName");
             txtTitle.setText("Ausgabe für '" + tripName + "' hinzufügen");
             for (Trip trip : GlobalStorageSingleton.getInstance().getTrips()) {
-                if (trip.equals(tripName)) {
+                if (trip.getName().equals(tripName)) {
                     choosenTrip = trip;
                     break;
                 }
@@ -60,29 +59,68 @@ public class AddExpenseActivity extends AppCompatActivity {
             txtTitle.setText("Fehler");
         }
         // Kategorien anzeigen
-        ArrayAdapter adapterCategories = new ArrayAdapter<Trip>(
+        ArrayAdapter adapterCategories = new ArrayAdapter<Category>(
                 this,
                 android.R.layout.simple_list_item_1,
                 android.R.id.text1
         );
         adapterCategories.addAll(GlobalStorageSingleton.getInstance().getCategories());
         spinnerCategory.setAdapter(adapterCategories);
-        // Userauswahl fuer Bezahlenden anzeigen
-        ArrayAdapter adapterUsers = new ArrayAdapter<User>(
-                this,
-                android.R.layout.simple_list_item_1,
-                android.R.id.text1
-        );
-        adapterCategories.addAll(GlobalStorageSingleton.getInstance().getUsers());
-        spinnerPayer.setAdapter(adapterCategories);
-        // Userauswahl fuer Empfaenger anzeigen
-        ArrayAdapter adapterRecipients = new ArrayAdapter<User>(
-                this,
-                android.R.layout.simple_list_item_1,
-                android.R.id.text1
-        );
-        adapterRecipients.addAll(GlobalStorageSingleton.getInstance().getUsers());
-        spinnerRecipients.setAdapter(adapterCategories);
+        if (choosenTrip != null) {
+            // Userauswahl fuer Bezahlenden anzeigen
+            ArrayAdapter adapterUsers = new ArrayAdapter<User>(
+                    this,
+                    android.R.layout.simple_list_item_1,
+                    android.R.id.text1
+            );
+            adapterUsers.addAll(choosenTrip.getParticipants());
+            spinnerPayer.setAdapter(adapterUsers);
+        }
+    }
+
+    public void showRecipientsChoice(View view) {
+        final List<User> choosenRecipientsDialog = new ArrayList<>();
+        String[] array = getListAsStrings(choosenTrip.getParticipants()).toArray(new String[choosenTrip.getParticipants().size()]);
+        final boolean[] isSelectedArray = new boolean[choosenTrip.getParticipants().size()];
+        AlertDialog.Builder builder = new AlertDialog.Builder(AddExpenseActivity.this);
+        builder.setTitle("Empfänger auswählen")
+                .setMultiChoiceItems(array, isSelectedArray,
+                        new DialogInterface.OnMultiChoiceClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                                if (isChecked) {
+                                    choosenRecipientsDialog.add(choosenTrip.getParticipants().get(which));
+                                } else {
+                                    choosenRecipientsDialog.remove(choosenTrip.getParticipants().get(which));
+                                }
+                            }
+                        })
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String choosenRecipientsSumStr = "";
+                        for (User user : choosenRecipientsDialog) {
+                            choosenRecipientsSumStr += (choosenRecipientsSumStr.length() > 0 ? ", " : "") + user.getName();
+                        }
+                        buttonRecipients.setText(choosenRecipientsSumStr);
+                        choosenRecipients = choosenRecipientsDialog;
+                    }
+                })
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                }).show();
+    }
+
+    private <T> List<String> getListAsStrings(List<T> list) {
+        List<String> listConv = new ArrayList<>();
+        for (T obj : list) {
+            listConv.add(String.valueOf(obj));
+        }
+        return listConv;
     }
 
     public void addExpense(View view) {
@@ -103,14 +141,16 @@ public class AddExpenseActivity extends AppCompatActivity {
                                 amount,
                                 (Category) spinnerCategory.getItemAtPosition(spinnerCategory.getSelectedItemPosition()),
                                 (User) spinnerPayer.getItemAtPosition(spinnerPayer.getSelectedItemPosition()),
-                                // FIXME Empfänger
-                                new ArrayList<User>()
+                                choosenRecipients
                         ));
             }
         }
         finish();
     }
 
+    /**
+     * Zeigt einen Dialog zur Auswahl des Ausgabedatums an
+     */
     public void showDatePicker(View view) {
         LayoutInflater inflater = getLayoutInflater();
         final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);

@@ -2,4 +2,6 @@
     <string name="app_name">Reisekostenrechner</string>
     <string name="titleActivityAddTrip">Neue Reise hinzufügen</string>
     <string name="titleActivityAddExpense">Neue Ausgabe hinzufügen</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Abrechen</string>
 </resources>

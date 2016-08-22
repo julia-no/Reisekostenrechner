@@ -81,10 +81,15 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="für wen wurde gezahlt?"
             android:id="@+id/textViewRecipient"/>
-    <de.julianolden.reisekostenrechner.reisekostenrechner.thirdparty.MultiSpinner
-            android:layout_width="match_parent"
+
+    <Button
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/spinnerRecipients" android:spinnerMode="dialog"/>
+            android:text="Empfänger auswählen"
+            android:onClick="showRecipientsChoice"
+            android:id="@+id/buttonRecipientsChoice"
+            android:layout_gravity="center_horizontal"/>
+
     <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
