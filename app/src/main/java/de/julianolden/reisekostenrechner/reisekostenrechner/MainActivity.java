@@ -20,7 +20,10 @@ import static android.R.attr.value;
  * Created by Julia Nolden on 16.05.2016.
  */
 public class MainActivity extends AppCompatActivity {
+    // Globale Klassenvariable vom Typ Listenansicht (ListView)
+    // zum Anzeigen der verfuegbaren Reisen
     private ListView listViewTrips;
+    // Listen Modell fuer verfuegbare Reisen
     private ArrayAdapter<Trip> adapterTrips;
 
     @Override
