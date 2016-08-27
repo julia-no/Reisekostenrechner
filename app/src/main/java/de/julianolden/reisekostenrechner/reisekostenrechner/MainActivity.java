@@ -19,18 +19,15 @@ import static android.R.attr.value;
 /**
  * Created by Julia Nolden on 16.05.2016.
  */
-public class MainActivity extends AppCompatActivity {
-    // Globale Klassenvariable vom Typ Listenansicht (ListView)
-    // zum Anzeigen der verfuegbaren Reisen
-    private ListView listViewTrips;
-    // Listen Modell fuer verfuegbare Reisen
-    private ArrayAdapter<Trip> adapterTrips;
+public class MainActivity extends AppCompatActivity { //Klasse MainActivity mit erweiterung um die Mutterklasse AppCompatActivity aber wisoooo???
+    private ListView listViewTrips; // Globale Klassenvariable vom Typ Listenansicht (ListView),
+    private ArrayAdapter<Trip> adapterTrips; //Listen Modell fuer verfuegbare Reisen
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {//Initialisierung der Activity activity_main
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        listViewTrips = (ListView) findViewById(R.id.listview_trips);
+        listViewTrips = (ListView) findViewById(R.id.listview_trips); //zugriff auf die Listview der Activity?
         adapterTrips = new ArrayAdapter<Trip>(
                 this,
                 android.R.layout.simple_list_item_1,
@@ -40,41 +37,29 @@ public class MainActivity extends AppCompatActivity {
         listViewTrips.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // Ermittle aktuell angeklickten Listeneintrag (Reise) und
-                // uebergebe Namen der Reise
-                chooseTrip(parent.getItemAtPosition(position).toString());
+                chooseTrip(parent.getItemAtPosition(position).toString());// Ermittle aktuell angeklickten Listeneintrag (Reise) und uebergebe Namen der Reise
             }
         });
     }
 
     @Override
-    protected void onStart() {
+    protected void onStart() {//update der ListViewTrips bei Start der Activity
         super.onStart();
         updateListViewTrips();
     }
 
-    public void openAddTripActivity(View button) {
-        //oeffne addTripActivity
+    public void openAddTripActivity(View button) {//oeffne addTripActivity
         Intent myIntent = new Intent(MainActivity.this, AddTripActivity.class);
         MainActivity.this.startActivity(myIntent);
     }
 
-    /**
-     * Aktualisiert die Listenansicht mit den global gespeicherten Reisen
-     */
-    public void updateListViewTrips() {
+    public void updateListViewTrips() {//Aktualisiert die Listenansicht mit den global gespeicherten Reisen
         adapterTrips.clear();
         adapterTrips.addAll(GlobalStorageSingleton.getInstance().getTrips());
     }
 
-    /**
-     * oeffnet die tripMenueActivity bei Klicken einer Reise aus der ListView
-     *
-     * @param tripName Name der ausgewählten Reise
-     */
-    public void chooseTrip(String tripName) {
-        //oeffne tripMenueActivity
-        Intent tripMenueIntent = new Intent(MainActivity.this, TripMenueActivity.class);
+    public void chooseTrip(String tripName) { //oeffnet die tripMenueActivity bei Klicken einer Reise aus der ListView @param tripName Name der ausgewählten Reise
+        Intent tripMenueIntent = new Intent(MainActivity.this, TripMenueActivity.class); //oeffne tripMenueActivity
         Bundle parameterChoosenTrip = new Bundle();
         parameterChoosenTrip.putString("tripName", tripName);
         tripMenueIntent.putExtras(parameterChoosenTrip);
