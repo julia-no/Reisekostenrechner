@@ -24,6 +24,11 @@
             android:label="@string/titleActivityAddExpense"> //Titel der Activity wird geändert zu string (einsehbar unter res>values>strings
         </activity>
 
+        <activity android:name=".AddIncomeActivity"
+                  android:label="@string/titleActivityAddIncome">//Titel der Activity wird geändert zu string (einsehbar
+            unter res>values>strings
+        </activity>
+
     </application>
 
 </manifest>

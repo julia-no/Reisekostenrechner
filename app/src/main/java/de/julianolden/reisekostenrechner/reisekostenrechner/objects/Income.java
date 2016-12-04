@@ -11,16 +11,12 @@ public class Income {
     private final Date date;
     private final float amount;
     private final Category category;
-    private final User payer;
-    private final List<User> recipients;
 
-    public Income(String title, Date date, float amount, Category category, User payer, List<User> recipients) {
+    public Income(String title, Date date, float amount, Category category) {
         this.title = title;
         this.date = date;
         this.amount = amount;
         this.category = category;
-        this.payer = payer;
-        this.recipients = recipients;
     }
 
     public String getTitle() {
@@ -37,13 +33,5 @@ public class Income {
 
     public Category getCategory() {
         return category;
-    }
-
-    public User getPayer() {
-        return payer;
-    }
-
-    public List<User> getRecipients() {
-        return recipients;
     }
 }

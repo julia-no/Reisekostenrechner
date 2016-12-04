@@ -4,56 +4,51 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.*;
-import de.julianolden.reisekostenrechner.reisekostenrechner.objects.Category;
-import de.julianolden.reisekostenrechner.reisekostenrechner.objects.Expense;
-import de.julianolden.reisekostenrechner.reisekostenrechner.objects.Trip;
-import de.julianolden.reisekostenrechner.reisekostenrechner.objects.User;
+import de.julianolden.reisekostenrechner.reisekostenrechner.objects.*;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static de.julianolden.reisekostenrechner.reisekostenrechner.R.id.spinnerPayer;
+
 /**
  * Created by Julia Nolden on 29.05.2016.
  */
-public class AddExpenseActivity extends AppCompatActivity {
+public class AddIncomeActivity extends AppCompatActivity {
 
-    private Button buttonDatepicker, buttonRecipients, buttonSaveExpense;
-    private Spinner spinnerCategory, spinnerPayer;
-    private ListView listRecipients;
+    private Button buttonDatepicker, buttonSaveIncome;
+    private Spinner spinnerCategory;
     private TextView txtTitle;
     private EditText editTextTitle, editTextAmount;
 
     private Trip choosenTrip;
-    private Calendar choosenExpenseDate;
-    private List<User> choosenRecipients = new ArrayList<>();
+    private Calendar choosenIncomeDate;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_expense);
+        setContentView(R.layout.activity_add_income);
         editTextTitle = (EditText) findViewById(R.id.editTextTitle);
         editTextAmount = (EditText) findViewById(R.id.editTextAmount);
         buttonDatepicker = (Button) findViewById(R.id.buttonDatepicker);
-        buttonRecipients = (Button) findViewById(R.id.buttonRecipientsChoice);
         spinnerCategory = (Spinner) findViewById(R.id.spinnerCategory);
-        spinnerPayer = (Spinner) findViewById(R.id.spinnerPayer);
         txtTitle = (TextView) findViewById(R.id.txtTitle);
-        buttonSaveExpense = (Button) findViewById(R.id.buttonSaveExpense);
+        buttonSaveIncome = (Button) findViewById(R.id.buttonSaveIncome);
         // Ausgewaehltes Trip Objekt per uebergebenen Titel ermitteln
         Bundle bundle = getIntent().getExtras();
         String tripName;
         if (bundle != null) {
             tripName = bundle.getString("tripName");
-            txtTitle.setText("Ausgabe für '" + tripName + "' hinzufügen");
+            txtTitle.setText("Einnahme für '" + tripName + "' hinzufügen");
             choosenTrip = GlobalStorageSingleton.getInstance().findTripByTitle(tripName);
         } else {
             // Fehler, Reisenamen wurde nicht uebergeben
             tripName = null;
-            txtTitle.setText("Fehler");
-            Toast.makeText(getApplicationContext(), "Fehler: Keine Reisetitel gewählt!", Toast.LENGTH_LONG).show();
+            txtTitle.setText("Fehler: Keine Reise ausgewählt!");
         }
         if (choosenTrip != null) {
             // Kategorien anzeigen
@@ -64,83 +59,30 @@ public class AddExpenseActivity extends AppCompatActivity {
             );
             adapterCategories.addAll(GlobalStorageSingleton.getInstance().getCategories());
             spinnerCategory.setAdapter(adapterCategories);
-            if (choosenTrip != null) {
-                // Userauswahl fuer Bezahlenden anzeigen
-                ArrayAdapter<User> adapterUsers = new ArrayAdapter<>(
-                        this,
-                        android.R.layout.simple_list_item_1,
-                        android.R.id.text1
-                );
-                adapterUsers.addAll(choosenTrip.getParticipants());
-                spinnerPayer.setAdapter(adapterUsers);
-            }
         } else {
             Toast.makeText(getApplicationContext(), "Fehler: Keine Reise gefunden!", Toast.LENGTH_LONG).show();
         }
     }
 
-    public void showRecipientsChoice(View view) {
-        final List<User> choosenRecipientsDialog = new ArrayList<>();
-        String[] array = Utils.getListAsStrings(choosenTrip.getParticipants()).toArray(new String[choosenTrip.getParticipants().size()]);
-        final boolean[] isSelectedArray = new boolean[choosenTrip.getParticipants().size()];
-        AlertDialog.Builder builder = new AlertDialog.Builder(AddExpenseActivity.this);
-        builder.setTitle("Empfänger auswählen")
-                .setMultiChoiceItems(array, isSelectedArray,
-                        new DialogInterface.OnMultiChoiceClickListener() {
-
-                            @Override
-                            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                                if (isChecked) {
-                                    choosenRecipientsDialog.add(choosenTrip.getParticipants().get(which));
-                                } else {
-                                    choosenRecipientsDialog.remove(choosenTrip.getParticipants().get(which));
-                                }
-                            }
-                        })
-                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String choosenRecipientsSumStr = "";
-                        // Ermittle alle von Benutzer gewaehlten Teilnehmer
-                        for (User user : choosenRecipientsDialog) {
-                            choosenRecipientsSumStr += (!choosenRecipientsSumStr.isEmpty() ? ", " : "") + user.getName();
-                        }
-                        buttonRecipients.setText(choosenRecipientsSumStr);
-                        choosenRecipients = choosenRecipientsDialog;
-                    }
-                })
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                }).show();
-    }
-
-    public void addExpense(View view) {
+    public void addIncome(View view) {
         // TODO Pruefe Eingaben auf Gueltigkeit
         float amount;
         if (choosenTrip != null) {
             try {
                 amount = Float.parseFloat(editTextAmount.getText().toString());
             } catch (NumberFormatException ex) {
-                Toast.makeText(getApplicationContext(), "Fehler: Der Betrag ist ungültig, nur Zahlen sind erlaubt!", Toast.LENGTH_LONG).show();
+                //TODO Fehlerbehandlung
                 return;
             }
-            if (choosenExpenseDate != null && editTextTitle.getText().length() > 0) {
-                choosenTrip.getExpenses().add(
-                        new Expense(
+            if (choosenIncomeDate != null && editTextTitle.getText().length() > 0) {
+                choosenTrip.getIncomes().add(
+                        new Income(
                                 editTextTitle.getText().toString(),
-                                choosenExpenseDate.getTime(),
+                                choosenIncomeDate.getTime(),
                                 amount,
-                                (Category) spinnerCategory.getItemAtPosition(spinnerCategory.getSelectedItemPosition()),
-                                (User) spinnerPayer.getItemAtPosition(spinnerPayer.getSelectedItemPosition()),
-                                choosenRecipients
+                                (Category) spinnerCategory.getItemAtPosition(spinnerCategory.getSelectedItemPosition())
                         ));
-                GlobalStorageSingleton.getInstance().saveDataToStorage();
             }
-        } else {
-            Toast.makeText(getApplicationContext(), "Fehler: Keine Reise gefunden!", Toast.LENGTH_LONG).show();
         }
         finish();
     }
@@ -189,8 +131,8 @@ public class AddExpenseActivity extends AppCompatActivity {
                 SimpleDateFormat formatter = new SimpleDateFormat(Utils.defaultDateFormat, Locale.GERMANY);
                 Calendar choosen = Calendar.getInstance();
                 choosen.set(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth());
-                //Speichern zum Anlegen eines Expense Objekts
-                choosenExpenseDate = choosen;
+                //Speichern zum Anlegen eines Income Objekts
+                choosenIncomeDate = choosen;
                 // Anzeige des gewaehlten Datums
                 buttonDatepicker.setText(formatter.format(choosen.getTime()));
                 dialog.dismiss();

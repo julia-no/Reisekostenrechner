@@ -14,7 +14,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Einnahme hinzufügen"
-            android:id="@+id/buttonAddIncome" android:layout_gravity="center_horizontal"/>
+            android:id="@+id/buttonAddIncome" android:layout_gravity="center_horizontal"
+            android:onClick="openAddIncomeActivity"/>
     <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -24,5 +25,5 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Reise löschen"
-            android:id="@+id/buttonDeleteTrip" android:layout_gravity="center_horizontal"/>
+            android:id="@+id/buttonDeleteTrip" android:layout_gravity="center_horizontal" android:onClick="deleteTrip"/>
 </LinearLayout>

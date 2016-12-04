@@ -7,15 +7,15 @@ import java.util.List;
  */
 public class Trip {
 
-    private final String name;
+    private final String title;
     private final User owner;
     private final List<User> participants;
     private final List<Expense> expenses;
     private final List<Income> incomes;
 
 
-    public Trip(String name, User owner, List<User> participants, List<Expense> expenses, List<Income> incomes) {
-        this.name = name;
+    public Trip(String title, User owner, List<User> participants, List<Expense> expenses, List<Income> incomes) {
+        this.title = title;
         this.owner = owner;
         this.participants = participants;
         this.expenses = expenses;
@@ -31,8 +31,8 @@ public class Trip {
         return owner;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
     public List<Income> getIncomes() {
@@ -45,6 +45,6 @@ public class Trip {
 
     @Override
     public String toString() {
-        return name;
+        return title;
     }
 }

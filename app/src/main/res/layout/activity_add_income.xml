@@ -14,18 +14,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Titel der Ausgabe"
-            android:id="@+id/textViewTitleExpense"/>
+            android:text="Titel der Einnahme"
+            android:id="@+id/textViewTitleIncome"/>
     <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/editTextTitle" android:hint="z.B. Eis Barcelona"/>
+            android:id="@+id/editTextTitle" android:hint="z.B. Gefunden Barcelona"/>
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Datum der Ausgabe"
-            android:id="@+id/textViewDateExpense"/>
+            android:text="Datum der Einnahme"
+            android:id="@+id/textViewDateIncome"/>
     <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -65,35 +65,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/spinnerCategory" android:layout_gravity="center_horizontal" android:spinnerMode="dialog"/>
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Wer zahlt?"
-            android:id="@+id/textViewPayer"/>
-    <Spinner
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/spinnerPayer" android:spinnerMode="dialog"/>
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="für wen wurde gezahlt?"
-            android:id="@+id/textViewRecipient"/>
-
-    <Button
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Empfänger auswählen"
-            android:onClick="showRecipientsChoice"
-            android:id="@+id/buttonRecipientsChoice"
-            android:layout_gravity="center_horizontal"/>
 
     <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Speichern"
-            android:id="@+id/buttonSaveExpense"
-            android:layout_gravity="center_horizontal" android:onClick="addExpense"/>
+            android:id="@+id/buttonSaveIncome"
+            android:layout_gravity="center_horizontal" android:onClick="addIncome"
+            android:nestedScrollingEnabled="false"/>
 </LinearLayout>

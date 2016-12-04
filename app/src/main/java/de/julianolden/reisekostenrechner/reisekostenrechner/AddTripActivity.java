@@ -17,8 +17,10 @@ import java.util.List;
 /**
  * Created by Julia Nolden on 16.05.2016.
  */
+//Klasse AddTripActivity mit erweiterung um die Mutterklasse AppCompatActivity
 public class AddTripActivity extends AppCompatActivity {
 
+    //Deklaration der Variablen
     private EditText editTextTripName, editTextUserName, editTextNewParticipant;
     private ListView listViewParticipants;
 
@@ -26,6 +28,7 @@ public class AddTripActivity extends AppCompatActivity {
     private ArrayAdapter adapterParticipants;
 
     @Override
+    //Initialisierung der Activity activity_add_Trip
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_trip);
@@ -43,15 +46,21 @@ public class AddTripActivity extends AppCompatActivity {
     }
 
     public void addTrip(View view) {
-        GlobalStorageSingleton.getInstance().getTrips().add(
+        User owner = new User(editTextUserName.getText().toString());
+        List<User> participantsWithOwner = new ArrayList<>();
+        participantsWithOwner.add(owner);
+        participantsWithOwner.addAll(tripUsers);
+        GlobalStorageSingleton storage = GlobalStorageSingleton.getInstance();
+        storage.addTrip(
                 new Trip(
                         editTextTripName.getText().toString(),
-                        new User(editTextTripName.getText().toString()),
-                        tripUsers,
+                        owner,
+                        participantsWithOwner,
                         new ArrayList<Expense>(),
                         new ArrayList<Income>()
                 )
         );
+        storage.saveDataToStorage();
         finish();
     }
 
