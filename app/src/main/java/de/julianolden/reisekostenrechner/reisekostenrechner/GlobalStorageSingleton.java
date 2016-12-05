@@ -53,10 +53,10 @@ public class GlobalStorageSingleton {
     /**
      * Fuegt eine Reise hinzu und speichert den aktuellen Stand
      *
-     * @param trippToAdd
+     * @param tripToAdd
      */
-    public void addTrip(Trip trippToAdd) {
-        trips.add(trippToAdd);
+    public void addTrip(Trip tripToAdd) {
+        trips.add(tripToAdd);
         saveDataToStorage();
     }
 
@@ -77,7 +77,7 @@ public class GlobalStorageSingleton {
      * @return gefundenes Trip Objekt oder NULL, wenn Trip mit gegebenen Titel nicht vorhanden ist
      */
     public Trip findTripByTitle(String tripName) {
-        for (Trip trip : GlobalStorageSingleton.getInstance().getTrips()) {
+        for (Trip trip : trips) {
             if (trip.getTitle().equals(tripName)) {
                 return trip;
             }

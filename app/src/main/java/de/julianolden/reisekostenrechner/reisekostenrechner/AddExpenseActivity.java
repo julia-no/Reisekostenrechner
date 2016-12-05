@@ -64,16 +64,14 @@ public class AddExpenseActivity extends AppCompatActivity {
             );
             adapterCategories.addAll(GlobalStorageSingleton.getInstance().getCategories());
             spinnerCategory.setAdapter(adapterCategories);
-            if (choosenTrip != null) {
-                // Userauswahl fuer Bezahlenden anzeigen
-                ArrayAdapter<User> adapterUsers = new ArrayAdapter<>(
-                        this,
-                        android.R.layout.simple_list_item_1,
-                        android.R.id.text1
-                );
-                adapterUsers.addAll(choosenTrip.getParticipants());
-                spinnerPayer.setAdapter(adapterUsers);
-            }
+            // Userauswahl fuer Bezahlenden anzeigen
+            ArrayAdapter<User> adapterUsers = new ArrayAdapter<>(
+                    this,
+                    android.R.layout.simple_list_item_1,
+                    android.R.id.text1
+            );
+            adapterUsers.addAll(choosenTrip.getParticipants());
+            spinnerPayer.setAdapter(adapterUsers);
         } else {
             Toast.makeText(getApplicationContext(), "Fehler: Keine Reise gefunden!", Toast.LENGTH_LONG).show();
         }
