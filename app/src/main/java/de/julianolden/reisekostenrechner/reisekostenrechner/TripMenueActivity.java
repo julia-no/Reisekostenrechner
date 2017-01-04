@@ -31,9 +31,9 @@ public class TripMenueActivity extends AppCompatActivity {
 
     public void openAddExpenseActivity(View view) {
         Intent openAddTripExpenseIntent = new Intent(TripMenueActivity.this, AddExpenseActivity.class);
-        Bundle parameterChoosenTrip = new Bundle();
-        parameterChoosenTrip.putString("tripName", tripName);
-        openAddTripExpenseIntent.putExtras(parameterChoosenTrip);
+        Bundle parameterChoosenTripBundle = new Bundle();
+        parameterChoosenTripBundle.putString("tripName", tripName);
+        openAddTripExpenseIntent.putExtras(parameterChoosenTripBundle);
         TripMenueActivity.this.startActivity(openAddTripExpenseIntent);
     }
 
@@ -55,4 +55,13 @@ public class TripMenueActivity extends AppCompatActivity {
             Toast.makeText(view.getContext(), "Fehler: Trip mit Titel '" + tripName + "' existiert nicht, Löschen gescheitert.", Toast.LENGTH_LONG).show();
         }
     }
+
+    public void openTripCalculation(View view) {
+        Intent openTripCalculationIntent = new Intent(TripMenueActivity.this, TripCalculationActivity.class);
+        Bundle parameterChoosenTrip = new Bundle();
+        parameterChoosenTrip.putString("tripName", tripName);
+        openTripCalculationIntent.putExtras(parameterChoosenTrip);
+        TripMenueActivity.this.startActivity(openTripCalculationIntent);
+    }
+
 }

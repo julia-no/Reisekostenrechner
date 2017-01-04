@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         GlobalStorageSingleton.getInstance().initialize(getApplicationContext());
-        listViewTrips = (ListView) findViewById(R.id.listview_trips); //zugriff auf die Listview der Activity?
+        listViewTrips = (ListView) findViewById(R.id.listview_trips); //zugriff auf die Listview der Activity
         adapterTrips = new ArrayAdapter<Trip>(
                 this,
                 android.R.layout.simple_list_item_1,

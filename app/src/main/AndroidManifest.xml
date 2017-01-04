@@ -29,6 +29,12 @@
             unter res>values>strings
         </activity>
 
+        <activity android:name=".TripCalculationActivity"
+                  android:label="@string/titleActivityTripCalculation">//Titel der Activity wird geändert zu string
+            (einsehbar
+            unter res>values>strings
+        </activity>
+
     </application>
 
 </manifest>

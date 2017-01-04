@@ -20,10 +20,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Abrechnung betrachten"
-            android:id="@+id/buttonViewReckoning" android:layout_gravity="center_horizontal"/>
+            android:id="@+id/buttonViewReckoning" android:layout_gravity="center_horizontal"
+            android:onClick="openTripCalculation"/>
     <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Reise löschen"
-            android:id="@+id/buttonDeleteTrip" android:layout_gravity="center_horizontal" android:onClick="deleteTrip"/>
+            android:id="@+id/buttonDeleteTrip" android:layout_gravity="center_horizontal"/>
 </LinearLayout>

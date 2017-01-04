@@ -79,7 +79,7 @@ public class AddExpenseActivity extends AppCompatActivity {
 
     public void showRecipientsChoice(View view) {
         final List<User> choosenRecipientsDialog = new ArrayList<>();
-        String[] array = Utils.getListAsStrings(choosenTrip.getParticipants()).toArray(new String[choosenTrip.getParticipants().size()]);
+        String[] array = Utils.getListAsStringList(choosenTrip.getParticipants()).toArray(new String[choosenTrip.getParticipants().size()]);
         final boolean[] isSelectedArray = new boolean[choosenTrip.getParticipants().size()];
         AlertDialog.Builder builder = new AlertDialog.Builder(AddExpenseActivity.this);
         builder.setTitle("Empfänger auswählen")
@@ -153,8 +153,7 @@ public class AddExpenseActivity extends AppCompatActivity {
         dialogBuilder.setView(customView);
         final DatePicker datePicker = (DatePicker) customView.findViewById(R.id.activity_date_picker_picker);
         final TextView dateTextView = (TextView) customView.findViewById(R.id.activity_date_picker_text);
-        final SimpleDateFormat dateTextViewFormatter = new SimpleDateFormat(Utils.defaultDateFormatDatepicker, Locale.GERMANY);
-        final SimpleDateFormat formatter = new SimpleDateFormat(Utils.defaultDateFormat, Locale.GERMANY);
+
         // View settings
         dialogBuilder.setTitle("Datum wählen");
         Calendar choosenDate = Calendar.getInstance();
@@ -162,7 +161,7 @@ public class AddExpenseActivity extends AppCompatActivity {
         int month = choosenDate.get(Calendar.MONTH);
         int day = choosenDate.get(Calendar.DAY_OF_MONTH);
         try {
-            Date choosenDateFromUI = formatter.parse(buttonDatepicker.getText().toString());
+            Date choosenDateFromUI = Utils.DATE_FORMATTER.parse(buttonDatepicker.getText().toString());
             choosenDate.setTime(choosenDateFromUI);
             year = choosenDate.get(Calendar.YEAR);
             month = choosenDate.get(Calendar.MONTH);
@@ -172,7 +171,7 @@ public class AddExpenseActivity extends AppCompatActivity {
         }
         Calendar dateToDisplay = Calendar.getInstance();
         dateToDisplay.set(year, month, day);
-        dateTextView.setText(dateTextViewFormatter.format(dateToDisplay.getTime()));
+        dateTextView.setText(Utils.DATE_TEXT_VIEW_FORMATTER.format(dateToDisplay.getTime()));
         // Buttons
         dialogBuilder.setNegativeButton("Abbrechen", new DialogInterface.OnClickListener() {
             @Override
@@ -184,7 +183,7 @@ public class AddExpenseActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // Aktion bei Auswahl des Datums zur Übernahme in die Activity aus dem Dialog
-                SimpleDateFormat formatter = new SimpleDateFormat(Utils.defaultDateFormat, Locale.GERMANY);
+                SimpleDateFormat formatter = new SimpleDateFormat(Utils.DEFAULT_DATE_FORMAT, Locale.GERMANY);
                 Calendar choosen = Calendar.getInstance();
                 choosen.set(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth());
                 //Speichern zum Anlegen eines Expense Objekts
@@ -201,7 +200,7 @@ public class AddExpenseActivity extends AppCompatActivity {
                 // Anzeige des aktuell ausgewählten Datums
                 Calendar choosenDate = Calendar.getInstance();
                 choosenDate.set(year, monthOfYear, dayOfMonth);
-                dateTextView.setText(dateTextViewFormatter.format(choosenDate.getTime()));
+                dateTextView.setText(Utils.DATE_TEXT_VIEW_FORMATTER.format(choosenDate.getTime()));
             }
         });
         // Finish

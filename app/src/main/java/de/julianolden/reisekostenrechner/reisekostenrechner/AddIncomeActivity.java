@@ -12,8 +12,6 @@ import de.julianolden.reisekostenrechner.reisekostenrechner.objects.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import static de.julianolden.reisekostenrechner.reisekostenrechner.R.id.spinnerPayer;
-
 /**
  * Created by Julia Nolden on 29.05.2016.
  */
@@ -97,8 +95,8 @@ public class AddIncomeActivity extends AppCompatActivity {
         dialogBuilder.setView(customView);
         final DatePicker datePicker = (DatePicker) customView.findViewById(R.id.activity_date_picker_picker);
         final TextView dateTextView = (TextView) customView.findViewById(R.id.activity_date_picker_text);
-        final SimpleDateFormat dateTextViewFormatter = new SimpleDateFormat(Utils.defaultDateFormatDatepicker, Locale.GERMANY);
-        final SimpleDateFormat formatter = new SimpleDateFormat(Utils.defaultDateFormat, Locale.GERMANY);
+        final SimpleDateFormat dateTextViewFormatter = new SimpleDateFormat(Utils.DEFAULT_DATE_FORMAT_DATEPICKER, Locale.GERMANY);
+        final SimpleDateFormat formatter = new SimpleDateFormat(Utils.DEFAULT_DATE_FORMAT, Locale.GERMANY);
         // View settings
         dialogBuilder.setTitle("Datum wählen");
         Calendar choosenDate = Calendar.getInstance();
@@ -128,7 +126,7 @@ public class AddIncomeActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // Aktion bei Auswahl des Datums zur Übernahme in die Activity aus dem Dialog
-                SimpleDateFormat formatter = new SimpleDateFormat(Utils.defaultDateFormat, Locale.GERMANY);
+                SimpleDateFormat formatter = new SimpleDateFormat(Utils.DEFAULT_DATE_FORMAT, Locale.GERMANY);
                 Calendar choosen = Calendar.getInstance();
                 choosen.set(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth());
                 //Speichern zum Anlegen eines Income Objekts

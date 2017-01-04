@@ -18,6 +18,14 @@ public class User extends Object{
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof User)) {
+            return false;
+        }
+        return getName().equals(((User) o).getName());
+    }
+
+    @Override
     public String toString() {
         return getName();
     }

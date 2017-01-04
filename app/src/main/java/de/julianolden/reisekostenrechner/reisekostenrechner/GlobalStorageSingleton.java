@@ -4,6 +4,7 @@ import android.content.Context;
 import de.julianolden.reisekostenrechner.reisekostenrechner.objects.Category;
 import de.julianolden.reisekostenrechner.reisekostenrechner.objects.Trip;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -34,7 +35,16 @@ public class GlobalStorageSingleton {
         appContext = context;
         SettingsManager.initializeSettingsManager(appContext);
         trips = SettingsManager.getInstance().readTripListFromStorage();
-        categories = SettingsManager.getInstance().readCategoriesListFromStorage();
+        //TODO Categories dynamisch editierbar implementieren und dann auch laden
+        //categories = SettingsManager.getInstance().readCategoriesListFromStorage();
+        categories = Arrays.asList(
+                new Category("Eintritt"),
+                new Category("Nahrungsmittel"),
+                new Category("Mobilität"),
+                new Category("Souvenirs"),
+                new Category("Sonstiges"),
+                new Category("Übernachtung")
+        );
     }
 
     /**
