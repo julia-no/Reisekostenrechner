@@ -81,6 +81,9 @@ public class AddIncomeActivity extends AppCompatActivity {
                                 (Category) spinnerCategory.getItemAtPosition(spinnerCategory.getSelectedItemPosition())
                         ));
             }
+            GlobalStorageSingleton.getInstance().saveDataToStorage();
+        } else {
+            Toast.makeText(getApplicationContext(), "Fehler: Keine Reise gefunden!", Toast.LENGTH_LONG).show();
         }
         finish();
     }

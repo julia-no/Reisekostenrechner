@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
 import android.widget.TextView;
 import de.julianolden.reisekostenrechner.reisekostenrechner.objects.Expense;
+import de.julianolden.reisekostenrechner.reisekostenrechner.objects.Income;
 import de.julianolden.reisekostenrechner.reisekostenrechner.objects.Trip;
 import de.julianolden.reisekostenrechner.reisekostenrechner.objects.User;
 
@@ -37,23 +38,29 @@ public class TripCalculationActivity extends AppCompatActivity {
             String outputText = "__Kostenübersicht für " + userToCalculateFor.getName() + "__\n\n";
             double sumOwnExpense = 0;
             // Durchlaufe fuer alle Teilnehmer...
+            double sumIncome = 0;
+            // Finde alle Einnahmen...
+            for (Income currentIcome : choosenTrip.getIncomes()) {
+                // Summiere alle Ausgaben anteilig, die fuer userToCalculateFor bezahlt wurden...
+                sumIncome += currentIcome.getAmount();
+            }
             for (User currentUser : choosenTrip.getParticipants()) {
-                double sumFromOther = 0;
-                double sumForOther = 0;
+                double sumExpenseFromOther = 0;
+                double sumExpenseForOther = 0;
                 // Finde alle Ausgaben von ausgewaehltem Teilnehmer...
                 for (Expense currentExpense : choosenTrip.getExpenses()) {
                     // Summiere alle Ausgaben anteilig, die fuer userToCalculateFor bezahlt wurden...
                     if ((currentExpense.getPayer().equals(currentUser)
                             && currentExpense.getRecipients().contains(userToCalculateFor))) {
-                        sumFromOther += currentExpense.getAmount() / currentExpense.getRecipients().size();
+                        sumExpenseFromOther += currentExpense.getAmount() / currentExpense.getRecipients().size();
                     }
                     // Summiere alle Ausgaben, die von userToCalculateFor bezahlt wurden...
                     if ((currentExpense.getPayer().equals(userToCalculateFor)
                             && currentExpense.getRecipients().contains(currentUser))) {
-                        sumForOther += currentExpense.getAmount() / currentExpense.getRecipients().size();
+                        sumExpenseForOther += currentExpense.getAmount() / currentExpense.getRecipients().size();
                     }
                 }
-                double totalAmount = sumForOther - sumFromOther;
+                double totalAmount = sumExpenseForOther - sumExpenseFromOther;
                 if (totalAmount < 0) {
                     outputText += currentUser.getName() + " bekommt von " + userToCalculateFor.getName() + ":   " + totalAmount + " € \n";
                 } else if (totalAmount > 0) {
@@ -66,8 +73,13 @@ public class TripCalculationActivity extends AppCompatActivity {
                     sumOwnExpense += currentExpense.getAmount() / currentExpense.getRecipients().size();
                 }
             }
-            outputText += "\n" + userToCalculateFor.getName() + " hat insgesamt   " + sumOwnExpense + " €   ausgegeben \n";
-
+            // Einnahmen abziehen
+            sumOwnExpense -= sumIncome;
+            // Ausgabe
+            outputText += "\n" + userToCalculateFor.getName() + " hat insgesamt" +
+                    (sumOwnExpense < 0 ?
+                            "    " + Math.abs(sumOwnExpense) + " €    verdient" :
+                            "    " + Math.abs(sumOwnExpense) + " €   ausgegeben") + "\n";
             outputText += "\n\n__Liste der Ausgaben__\n";
             for (Expense currentExpense : choosenTrip.getExpenses()) {
                 outputText = outputText + "\n" +
@@ -78,6 +90,16 @@ public class TripCalculationActivity extends AppCompatActivity {
                         "bezahlt von: " +
                         currentExpense.getPayer() + "\n" +
                         "bezahlt für:  " + Utils.getListAsStrings(currentExpense.getRecipients(), ", ") +
+                        "\n";
+
+            }
+            outputText += "\n\n__Liste der Einnahmen__\n";
+            for (Income currentIncome : choosenTrip.getIncomes()) {
+                outputText = outputText + "\n" +
+                        Utils.DATE_TEXT_VIEW_FORMATTER.format(currentIncome.getDate()) + "   -   " +
+                        currentIncome.getAmount() + "€   -   " +
+                        "'" + currentIncome.getTitle() + "'\n" +
+                        "Kategorie '" + currentIncome.getCategory() +
                         "\n";
 
             }
