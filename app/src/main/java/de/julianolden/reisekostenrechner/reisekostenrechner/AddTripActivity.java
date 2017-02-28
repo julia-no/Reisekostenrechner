@@ -47,7 +47,7 @@ public class AddTripActivity extends AppCompatActivity {
 
     public void addTrip(View view) {
         User owner = new User(editTextUserName.getText().toString());
-        List<User> participantsWithOwner = new ArrayList<>();
+        ArrayList<User> participantsWithOwner = new ArrayList<>();
         participantsWithOwner.add(owner);
         participantsWithOwner.addAll(tripUsers);
         GlobalStorageSingleton storage = GlobalStorageSingleton.getInstance();

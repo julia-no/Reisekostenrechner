@@ -1,5 +1,6 @@
 package de.julianolden.reisekostenrechner.reisekostenrechner.objects;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -9,12 +10,12 @@ public class Trip {
 
     private final String title;
     private final User owner;
-    private final List<User> participants;
-    private final List<Expense> expenses;
-    private final List<Income> incomes;
+    private final ArrayList<User> participants;
+    private final ArrayList<Expense> expenses;
+    private final ArrayList<Income> incomes;
 
 
-    public Trip(String title, User owner, List<User> participants, List<Expense> expenses, List<Income> incomes) {
+    public Trip(String title, User owner, ArrayList<User> participants, ArrayList<Expense> expenses, ArrayList<Income> incomes) {
         this.title = title;
         this.owner = owner;
         this.participants = participants;
@@ -35,11 +36,11 @@ public class Trip {
         return title;
     }
 
-    public List<Income> getIncomes() {
+    public ArrayList<Income> getIncomes() {
         return incomes;
     }
 
-    public List<Expense> getExpenses() {
+    public ArrayList<Expense> getExpenses() {
         return expenses;
     }
 

@@ -1,8 +1,7 @@
 package de.julianolden.reisekostenrechner.reisekostenrechner;
 
 import android.content.Context;
-import de.julianolden.reisekostenrechner.reisekostenrechner.objects.Category;
-import de.julianolden.reisekostenrechner.reisekostenrechner.objects.Trip;
+import de.julianolden.reisekostenrechner.reisekostenrechner.objects.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -79,6 +78,23 @@ public class GlobalStorageSingleton {
         trips.remove(tripToRemove);
         saveDataToStorage();
     }
+
+    /**
+     * Loescht eine Buchung aus einem Tripobjekt.
+     * Es wird unterschieden, ob es sich um eine Einnahme oder Ausgabe Buchung handelt
+     *
+     * @param trip
+     * @param booking
+     */
+    public void removeTripBooking(Trip trip, Booking booking) {
+        if(booking instanceof Expense) {
+            trip.getExpenses().remove(booking);
+        }else if (booking instanceof Income) {
+            trip.getIncomes().remove(booking);
+        }
+        saveDataToStorage();
+    }
+
 
     /**
      * Findet ein Trip Objekt anhand seines Titels

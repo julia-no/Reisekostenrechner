@@ -3,11 +3,11 @@ package de.julianolden.reisekostenrechner.reisekostenrechner;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
+import android.widget.ListView;
 import android.widget.TextView;
-import de.julianolden.reisekostenrechner.reisekostenrechner.objects.Expense;
-import de.julianolden.reisekostenrechner.reisekostenrechner.objects.Income;
-import de.julianolden.reisekostenrechner.reisekostenrechner.objects.Trip;
-import de.julianolden.reisekostenrechner.reisekostenrechner.objects.User;
+import de.julianolden.reisekostenrechner.reisekostenrechner.objects.*;
+
+import java.util.ArrayList;
 
 /**
  * Created by Julia Nolden on 29.05.2016.
@@ -15,27 +15,48 @@ import de.julianolden.reisekostenrechner.reisekostenrechner.objects.User;
 public class TripCalculationActivity extends AppCompatActivity {
     private String tripName;
     private Trip choosenTrip;
-    private TextView textView;
+    private TextView textViewCalculation;
+    private TextView textViewTitle;
+    private ListView listViewExpenses;
+    private ListView listViewIncomes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_calculation);
-        textView = (TextView) findViewById(R.id.listview_trips);
-        textView.setMovementMethod(new ScrollingMovementMethod());
+        textViewCalculation = (TextView) findViewById(R.id.listview_trips);
+        textViewTitle = (TextView) findViewById(R.id.text_calculation_title);
+        textViewCalculation.setMovementMethod(new ScrollingMovementMethod());
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
+            // Zeige Inhalte wenn Reise uebergeben wurde
             tripName = bundle.getString("tripName");
             choosenTrip = GlobalStorageSingleton.getInstance().findTripByTitle(tripName);
-            setTitle(tripName);
+            setTitle("Kostenübersicht " + tripName);
+            textViewTitle.setText("Kostenübersicht für " + choosenTrip.getOwner().getName());
+            calculateTripBookings();
+            listViewExpenses = (ListView) findViewById(R.id.listview_expenses);
+            ArrayList<Expense> expenses = choosenTrip.getExpenses();
+            ListItemExpenseAdapter adapterExpenses = new ListItemExpenseAdapter(expenses, this, this, choosenTrip);
+            listViewExpenses.setAdapter(adapterExpenses);
+            listViewIncomes = (ListView) findViewById(R.id.listview_incomes);
+            ArrayList<Income> incomes = choosenTrip.getIncomes();
+            ListItemIncomeAdapter adapterIncomes = new ListItemIncomeAdapter(incomes, this, this, choosenTrip);
+            listViewIncomes.setAdapter(adapterIncomes);
         } else {
             // Fehler, Reisenamen wurde nicht uebergeben
             tripName = null;
             setTitle("Fehler: Keine Reise ausgewählt!");
         }
+    }
+
+    /**
+     * Berechnet Ein-/Ausgabebilanz der Teilnehmer und zeigt diese in einem Textfeld der Oberflaeche an
+     */
+    public void calculateTripBookings() {
         if (choosenTrip != null) {
             User userToCalculateFor = choosenTrip.getOwner();
-            String outputText = "__Kostenübersicht für " + userToCalculateFor.getName() + "__\n\n";
+            String outputText = "";
             double sumOwnExpense = 0;
             // Durchlaufe fuer alle Teilnehmer...
             double sumIncome = 0;
@@ -80,31 +101,8 @@ public class TripCalculationActivity extends AppCompatActivity {
                     (sumOwnExpense < 0 ?
                             "    " + Math.abs(sumOwnExpense) + " €    verdient" :
                             "    " + Math.abs(sumOwnExpense) + " €   ausgegeben") + "\n";
-            outputText += "\n\n__Liste der Ausgaben__\n";
-            for (Expense currentExpense : choosenTrip.getExpenses()) {
-                outputText = outputText + "\n" +
-                        Utils.DATE_TEXT_VIEW_FORMATTER.format(currentExpense.getDate()) + "   -   " +
-                        currentExpense.getAmount() + "€   -   " +
-                        "'" + currentExpense.getTitle() + "'\n" +
-                        "Kategorie '" + currentExpense.getCategory() + "'\n" +
-                        "bezahlt von: " +
-                        currentExpense.getPayer() + "\n" +
-                        "bezahlt für:  " + Utils.getListAsStrings(currentExpense.getRecipients(), ", ") +
-                        "\n";
 
-            }
-            outputText += "\n\n__Liste der Einnahmen__\n";
-            for (Income currentIncome : choosenTrip.getIncomes()) {
-                outputText = outputText + "\n" +
-                        Utils.DATE_TEXT_VIEW_FORMATTER.format(currentIncome.getDate()) + "   -   " +
-                        currentIncome.getAmount() + "€   -   " +
-                        "'" + currentIncome.getTitle() + "'\n" +
-                        "Kategorie '" + currentIncome.getCategory() +
-                        "\n";
-
-            }
-
-            textView.setText(outputText);
+            textViewCalculation.setText(outputText);
         }
     }
 

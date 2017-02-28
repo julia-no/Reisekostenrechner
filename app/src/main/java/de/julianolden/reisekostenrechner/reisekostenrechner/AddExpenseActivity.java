@@ -161,7 +161,7 @@ public class AddExpenseActivity extends AppCompatActivity {
         int month = choosenDate.get(Calendar.MONTH);
         int day = choosenDate.get(Calendar.DAY_OF_MONTH);
         try {
-            Date choosenDateFromUI = Utils.DATE_FORMATTER.parse(buttonDatepicker.getText().toString());
+            Date choosenDateFromUI = Utils.DATE_FORMATTER_SHORT.parse(buttonDatepicker.getText().toString());
             choosenDate.setTime(choosenDateFromUI);
             year = choosenDate.get(Calendar.YEAR);
             month = choosenDate.get(Calendar.MONTH);

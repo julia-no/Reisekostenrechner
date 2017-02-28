@@ -6,4 +6,6 @@
     <string name="cancel">Abrechen</string>
     <string name="titleActivityAddIncome">Neue Einnahme hinzufügen</string>
     <string name="titleActivityTripCalculation">Reisekosten betrachten</string>
+    <string name="ausgaben">Ausgaben</string>
+    <string name="einnahmen">Einnahmen</string>
 </resources>
